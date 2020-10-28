@@ -2,40 +2,37 @@
 
 using namespace std;
 
-int main(){
+struct punkt{
+    int x;
+    int y;
+};
 
-    int ilosc;
-    cin >> ilosc;
+int iloczyn(punkt a, punkt b, punkt c){
+    return (c.x-a.x)*(b.y-a.y)-(b.x-a.x)*(c.y-a.y);
+}
+bool pkt_na(punkt a, punkt b, punkt c){
+    return min(a.x, b.x) <= c.x && c.x <= max(a.x, b.x) && min(a.y, b.y) <= c.y && c.y <= max(a.y, b.y);
+}
+bool przecina(punkt a, punkt b, punkt c, punkt d){
+    int il1 = iloczyn(c, d, a);
+    int il2 = iloczyn(c, d, b);
+    int il3 = iloczyn(a, b, c);
+    int il4 = iloczyn(a, b, d);
 
-    int liczby[1000000] = {};
-
-    for(int i = 0; i < ilosc; ++i){
-        int a;
-        cin >> a;
-        if(a > ilosc){
-            cout << "NIE";
-            return 0;
-        }
-        else{
-            liczby[a]++;
-        }
-    }
-
-    bool popsuted = false;
-
-    for(int i = 0; i < ilosc; ++i){
-        if(liczby[i] != 1){
-            popsuted = true;
-            break;
-        }
-    }
-
-    if(popsuted){
-        cout << "TAK";
-    }
-    else{
-        cout << "NIE";
-    }
+    if((il1 > 0 && il2 < 0 || il1 < 0 && il2 > 0) && (il3 > 0 && il4 < 0 || il3 < 0 && il4 > 0))
+        return 1;
+    if((il1 == 0 && pkt_na(c, d, a)) || (il2 == 0 && pkt_na(c, d, b)) || (il3 == 0 && pkt_na(a, b, c)) || (il4 == 0 && pkt_na(a, b, d)))
+        return 1;
 
     return 0;
+}
+
+int main(){
+    int p;
+    cin >> p;
+    while(p--){
+        punkt a,b,c,d;
+        cin >> a.x >> a.y >> b.x >> b.y >> c.x >> c.y >> d.x >> d.y;
+        cout << przecina(a,b,c,d) << endl;
+    }
 }
