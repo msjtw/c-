@@ -5,19 +5,20 @@
 using namespace std;
 
 struct as{
-    short int cel;
-    short int numer;
+    int cel;
+    int numer;
 };
 
 struct miasto{
-    short int ak;
-    short int pop;
-    vector <as> numery;
+    int ak;
+    int pop;
 };
 
 vector <vector<as>> lis;
 
-short int gnomy[150010];
+int gnomy[150010];
+
+as miasta[100010];
 
 int main(){
     ios_base::sync_with_stdio(false);
@@ -50,17 +51,13 @@ int main(){
                 miasto b;
                 b.ak = lis[koej.front().ak][i].cel;
                 b.pop = koej.front().ak;
-                b.numery = koej.front().numery;
-                as temp;
-                temp.numer = lis[koej.front().ak][i].numer;
-                b.numery.push_back(temp);
+                miasta[lis[koej.front().ak][i].cel].cel = koej.front().ak;
+                miasta[lis[koej.front().ak][i].cel].numer =lis[koej.front().ak][i].numer;
                 koej.push(b);
             }   
         }
-        lis[koej.front().ak] = koej.front().numery;
         koej.pop();
     }
-
 
     while(p--){
         char op;
@@ -68,12 +65,17 @@ int main(){
         if(op == 'Z'){
             int cel;
             cin >> cel;
-            short int moze_kupic[150010] {};
+            int moze_kupic[150010] {};
             int ilosc = 0;
-            for(auto a : lis[cel]){
-                moze_kupic[gnomy[a.numer]]++;
-                if(moze_kupic[gnomy[a.numer]] == 1)
+            as ak = miasta[cel];
+            while(1){
+                moze_kupic[gnomy[ak.numer]]++;
+                if(moze_kupic[gnomy[ak.numer]] == 1)
                     ilosc++;
+                if(ak.cel == 1)
+                    break;
+                else
+                    ak = miasta[ak.cel];
             }
             cout << ilosc << "\n";
         }
