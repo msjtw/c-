@@ -58,17 +58,19 @@ int main(){
                     else
                         poziomy[ak_poz+1].bez = dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura]+1;
                 }
-                poziomy[ak_poz-1].bez = dziury[ak_poz][poziomy[ak_poz].ost_dziura];
-                while(poziomy[ak_poz-1].ost_dziura >= 0 && dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura] >= poziomy[ak_poz-1].bez)
-                    poziomy[ak_poz-1].ost_dziura--;
-                if(poziomy[ak_poz-1].ost_dziura == -1)
-                    poziomy[ak_poz-1].bez = 0;
-                else
-                    poziomy[ak_poz-1].bez = dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura]+1;
-                
+                if(ak_poz != 1){
+                    poziomy[ak_poz-1].bez = dziury[ak_poz][poziomy[ak_poz].ost_dziura];
+                    while(poziomy[ak_poz-1].ost_dziura >= 0 && dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura] >= poziomy[ak_poz-1].bez)
+                        poziomy[ak_poz-1].ost_dziura--;
+                    if(poziomy[ak_poz-1].ost_dziura == -1)
+                        poziomy[ak_poz-1].bez = 0;
+                    else
+                        poziomy[ak_poz-1].bez = dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura]+1;
+                }
             }
             h = ak_poz-1;
         }
+
 
         do{
             for(int ak_poz = poziomow; ak_poz > h; ak_poz--){
@@ -80,20 +82,22 @@ int main(){
                     else 
                         poziomy[ak_poz].bez = 0;
                 }
-                if(poziomy[ak_poz].bez > 0){
-                    poziomy[ak_poz+1].bez = poziomy[ak_poz].bez+1;
-                    while(poziomy[ak_poz+1].ost_dziura >= 0 && dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura] >= poziomy[ak_poz+1].bez){
-                        poziomy[ak_poz+1].ost_dziura--;
+                if(poziomy[ak_poz+1].bez > dziury[ak_poz][poziomy[ak_poz].ost_dziura+1] && poziomy[ak_poz].bez > 0){
+                    if(ak_poz != poziomow){
+                        poziomy[ak_poz+1].bez = poziomy[ak_poz].bez+1;
+                        while(poziomy[ak_poz+1].ost_dziura >= 0 && dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura] >= poziomy[ak_poz+1].bez){
+                            poziomy[ak_poz+1].ost_dziura--;
+                        }
+                        if(poziomy[ak_poz+1].ost_dziura == -1)
+                            poziomy[ak_poz+1].bez = 0;
+                        else
+                            poziomy[ak_poz+1].bez = dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura]+1;
+                        poziomy[ak_poz+1].koszt = poziomy[ak_poz].koszt;
                     }
-                    if(poziomy[ak_poz+1].ost_dziura == -1)
-                        poziomy[ak_poz+1].bez = 0;
-                    else
-                        poziomy[ak_poz+1].bez = dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura]+1;
-                    poziomy[ak_poz+1].koszt = poziomy[ak_poz].koszt+1;
-                    
-
-                    poziomy[ak_poz-1].bez = poziomy[ak_poz].bez-1;
-                    if(ak_poz > 1){
+                }
+                if(poziomy[ak_poz].bez > 0){
+                    if(ak_poz != 1){
+                        poziomy[ak_poz-1].bez = poziomy[ak_poz].bez-1;
                         while(poziomy[ak_poz-1].ost_dziura >= 0 && dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura] >= poziomy[ak_poz-1].bez){
                             poziomy[ak_poz-1].ost_dziura--;
                         }
@@ -101,8 +105,14 @@ int main(){
                             poziomy[ak_poz-1].bez = 0;
                         else
                             poziomy[ak_poz-1].bez = dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura]+1;
+                        poziomy[ak_poz-1].koszt = poziomy[ak_poz].koszt;
                     }
-                } 
+                }
+
+                // for(int i = 1; i <= poziomow; i++){
+                //     cout << poziomy[i].bez << '\t' << poziomy[i].koszt << '\t' << poziomy[i].ost_dziura << endl;
+                // }
+                // cout << endl ; 
             }
         }while(poziomy[poziomow].bez > 0);
     }
