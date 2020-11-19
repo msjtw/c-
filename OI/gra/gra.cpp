@@ -74,6 +74,18 @@ int main(){
 
         do{
             for(int ak_poz = poziomow; ak_poz > h; ak_poz--){
+                if(poziomy[ak_poz].bez < poziomy[ak_poz+1].bez && ak_poz != poziomow){
+                    poziomy[ak_poz+1].bez = poziomy[ak_poz].bez-1;
+                    while(poziomy[ak_poz+1].ost_dziura >= 0 && dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura] >= poziomy[ak_poz+1].bez){
+                        poziomy[ak_poz+1].ost_dziura--;
+                    }
+                    if(poziomy[ak_poz+1].ost_dziura == -1)
+                        poziomy[ak_poz+1].bez = 0;
+                    else
+                        poziomy[ak_poz+1].bez = dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura]+1;
+                    poziomy[ak_poz+1].koszt = poziomy[ak_poz].koszt +1 ;
+                    cout << "en" << endl;
+                }
                 if(poziomy[ak_poz].bez > 0){
                     poziomy[ak_poz].ost_dziura--;
                     poziomy[ak_poz].koszt++;
@@ -82,9 +94,9 @@ int main(){
                     else 
                         poziomy[ak_poz].bez = 0;
                 }
-                if(poziomy[ak_poz+1].bez > dziury[ak_poz][poziomy[ak_poz].ost_dziura+1] && poziomy[ak_poz].bez > 0){
-                    if(ak_poz != poziomow){
-                        poziomy[ak_poz+1].bez = poziomy[ak_poz].bez+1;
+                if(poziomy[ak_poz].bez > 0){
+                    if(poziomy[ak_poz+1].bez > dziury[ak_poz][poziomy[ak_poz].ost_dziura+1] && ak_poz != poziomow){
+                        poziomy[ak_poz+1].bez = poziomy[ak_poz].bez-1;
                         while(poziomy[ak_poz+1].ost_dziura >= 0 && dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura] >= poziomy[ak_poz+1].bez){
                             poziomy[ak_poz+1].ost_dziura--;
                         }
@@ -94,35 +106,30 @@ int main(){
                             poziomy[ak_poz+1].bez = dziury[ak_poz+1][poziomy[ak_poz+1].ost_dziura]+1;
                         poziomy[ak_poz+1].koszt = poziomy[ak_poz].koszt;
                     }
-                }
-                if(poziomy[ak_poz].bez > 0){
                     if(ak_poz != 1){
-                        poziomy[ak_poz-1].bez = poziomy[ak_poz].bez-1;
-                        while(poziomy[ak_poz-1].ost_dziura >= 0 && dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura] >= poziomy[ak_poz-1].bez){
-                            poziomy[ak_poz-1].ost_dziura--;
+                        poziom np = poziomy[ak_poz-1];
+                        np.bez = poziomy[ak_poz].bez-1;
+                        while(np.ost_dziura >= 0 && dziury[ak_poz-1][np.ost_dziura] >= np.bez){
+                            np.ost_dziura--;
                         }
-                        if(poziomy[ak_poz-1].ost_dziura == -1)
-                            poziomy[ak_poz-1].bez = 0;
+                        if(np.ost_dziura == -1)
+                            np.bez = 0;
                         else
-                            poziomy[ak_poz-1].bez = dziury[ak_poz-1][poziomy[ak_poz-1].ost_dziura]+1;
-                        poziomy[ak_poz-1].koszt = poziomy[ak_poz].koszt;
+                            np.bez = dziury[ak_poz-1][np.ost_dziura]+1;
+                        if(np.bez < poziomy[ak_poz-1].bez){
+                            poziomy[ak_poz-1] = np;
+                            poziomy[ak_poz-1].koszt = poziomy[ak_poz].koszt;
+                        }
                     }
                 }
 
-                // for(int i = 1; i <= poziomow; i++){
-                //     cout << poziomy[i].bez << '\t' << poziomy[i].koszt << '\t' << poziomy[i].ost_dziura << endl;
-                // }
-                // cout << endl ; 
+                for(int i = 1; i <= poziomow; i++){
+                    cout << poziomy[i].bez << '\t' << poziomy[i].koszt << '\t' << poziomy[i].ost_dziura << endl;
+                }
+                cout << endl ; 
             }
         }while(poziomy[poziomow].bez > 0);
     }
-
-    
-
-    // for(int i = 1; i <= poziomow; i++){
-    //     cout << poziomy[i].bez << '\t' << poziomy[i].koszt << '\t' << poziomy[i].ost_dziura << endl;
-    // }
-    // cout << h;
 
     while(p--){
         int a;

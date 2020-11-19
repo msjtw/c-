@@ -2,30 +2,13 @@
 
 using namespace std;
 
-int silnia(int n){
-    int wynik = 1;
-    while(n > 0){
-        wynik *= n;
-        n--;
-    }
-    return wynik;
-    
-}
-
 int main(){
-    int n = 1;
-    int a = silnia(n);
-    int b = silnia(n+1);
-
-    while(a < b){
-        n++;
-        a = silnia(n);
-        b = silnia(n+1);
-    }
-
-    cout << n+1 << ":  " << a;
-
+    ios_base::sync_with_stdio(false);
+    cin.tie(nullptr);
+    cout.tie(nullptr);
     
-
+    for(int i = 0; i < 2000000; i++){
+        cout << i;
+    }
     return  0;
 }
